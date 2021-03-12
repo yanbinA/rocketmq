@@ -25,6 +25,7 @@ public class Consumer {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
                 // todo 在消费同步消息时, 只收到一半的消息?
+                // 无法重现了---当时虚拟机的网络设置了动态获取有指定了固定ip?
                 System.out.printf("%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
