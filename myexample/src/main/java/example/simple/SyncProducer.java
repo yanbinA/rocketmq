@@ -24,7 +24,7 @@ public class SyncProducer {
         producer.setNamesrvAddr("192.168.227.131:9876");
         //启动Producer实例
         producer.start();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             //创建消息, 指定Topic, tags和消息体
             // todo 弄清楚Message各属性的作用
             Message message = new Message("TopicTest", "TagA", ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET));

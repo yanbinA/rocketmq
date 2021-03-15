@@ -26,11 +26,11 @@ public class Consumer {
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
                 // todo 在消费同步消息时, 只收到一半的消息?
                 // 无法重现了---当时虚拟机的网络设置了动态获取有指定了固定ip?
-                System.out.printf("%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);
+                System.out.printf("consumeThread=" + Thread.currentThread().getName() + "%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
         });
-        //启动消费者
+        //启动消费者, 该方法必须在配置完后调用
         consumer.start();
         System.out.printf("Consumer Started.%n");
         //consumer.shutdown();
