@@ -1,6 +1,7 @@
 package example.simple;
 
 import com.sun.xml.internal.bind.v2.TODO;
+import example.LocalProperty;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
@@ -21,13 +22,13 @@ public class SyncProducer {
         DefaultMQProducer producer = new DefaultMQProducer();
         producer.setProducerGroup("simple_message_group");
         //设置NameServer地址
-        producer.setNamesrvAddr("192.168.227.131:9876");
+        producer.setNamesrvAddr(LocalProperty.SERVER_NAME);
         //启动Producer实例
         producer.start();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             //创建消息, 指定Topic, tags和消息体
             // todo 弄清楚Message各属性的作用
-            Message message = new Message("TopicTest", "TagA", ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET));
+            Message message = new Message("TopicTestA", "TagA", ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET));
             // 发送消息, SendResult可用来确认消息是否发送成功
             SendResult send = producer.send(message);
             System.out.printf("%s%n", send);

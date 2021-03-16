@@ -1,5 +1,6 @@
 package example.order;
 
+import example.LocalProperty;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeOrderlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeOrderlyStatus;
@@ -13,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class Consumer {
     public static void main(String[] args) throws MQClientException {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("order_message_group");
-        consumer.setNamesrvAddr("192.168.227.131:9876");
+        consumer.setNamesrvAddr(LocalProperty.SERVER_NAME);
         consumer.subscribe("TopicTest", "*");
         consumer.registerMessageListener(new MessageListenerOrderly() {
             @Override
