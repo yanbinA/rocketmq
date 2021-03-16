@@ -14,7 +14,7 @@ import java.util.List;
 public class PushConsumer {
     public static void main(String[] args) throws MQClientException {
         //实例化消费者, 指定group
-        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("simple_message_group");
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("broadcast_message_group");
         //设置NameServer的地址
         consumer.setNamesrvAddr(LocalProperty.SERVER_NAME);
         //订阅Topic, 指定tags来过滤需要消费的消息

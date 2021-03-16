@@ -15,6 +15,7 @@ import java.util.List;
 /**
  * 批量消息, 批量发送消息能显著提高发送小消息的性能.
  * 限制: 相同的Topic, 相同的waitStoreMsgOK, 不能是延时消息, 而且这批消息的总大小不能超过4MB
+ * 如果不确定这批消息是否超过了4M, 这需要分割消息-参考ListSplitter
  * todo waitStoreMsgOK什么作用
  */
 public class SimpleBatchProducer {
