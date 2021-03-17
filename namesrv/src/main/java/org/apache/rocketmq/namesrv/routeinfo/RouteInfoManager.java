@@ -427,14 +427,18 @@ public class RouteInfoManager {
     }
 
     public void scanNotActiveBroker() {
+        //遍历brokerLive
         Iterator<Entry<String, BrokerLiveInfo>> it = this.brokerLiveTable.entrySet().iterator();
         while (it.hasNext()) {
             Entry<String, BrokerLiveInfo> next = it.next();
+            //broker最后一次更新时间
             long last = next.getValue().getLastUpdateTimestamp();
+            //如果超过BROKER_CHANNEL_EXPIRED_TIME,移除broker
             if ((last + BROKER_CHANNEL_EXPIRED_TIME) < System.currentTimeMillis()) {
                 RemotingUtil.closeChannel(next.getValue().getChannel());
                 it.remove();
                 log.warn("The broker channel expired, {} {}ms", next.getKey(), BROKER_CHANNEL_EXPIRED_TIME);
+                //移除broker相关数据
                 this.onChannelDestroy(next.getKey(), next.getValue().getChannel());
             }
         }

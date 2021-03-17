@@ -74,16 +74,16 @@ public class NamesrvController {
     }
 
     public boolean initialize() {
-
+        //加载namesrv\kvConfig.json.kvConfig.json文件的作用不清楚
         this.kvConfigManager.load();
-
+        //实例NettyRemotingServer
         this.remotingServer = new NettyRemotingServer(this.nettyServerConfig, this.brokerHousekeepingService);
-
+        //实例线程池
         this.remotingExecutor =
             Executors.newFixedThreadPool(nettyServerConfig.getServerWorkerThreads(), new ThreadFactoryImpl("RemotingExecutorThread_"));
 
         this.registerProcessor();
-
+        //5秒后每十秒检查不活跃的broker, 并移除
         this.scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
 
             @Override
