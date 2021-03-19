@@ -8,6 +8,7 @@ import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.apache.rocketmq.common.message.MessageExt;
 
 import java.util.List;
@@ -21,12 +22,14 @@ public class Consumer {
         consumer.setNamesrvAddr(LocalProperty.SERVER_NAME);
         //订阅Topic, 指定tags来过滤需要消费的消息
         consumer.subscribe("TopicTest", "*");
+        consumer.subscribe("TopicTestA", "*");
+        //设置从哪里开始消费
+        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
+        //consumer.setConsumeTimestamp();
         //注册回调实现类来处理从broker拉回的消息
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
-                // todo 在消费同步消息时, 只收到一半的消息?
-                // 无法重现了---当时虚拟机的网络设置了动态获取有指定了固定ip?
                 System.out.printf("consumeThread=" + Thread.currentThread().getName() + "%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }

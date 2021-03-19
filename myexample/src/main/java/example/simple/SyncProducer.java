@@ -25,10 +25,16 @@ public class SyncProducer {
         producer.setNamesrvAddr(LocalProperty.SERVER_NAME);
         //启动Producer实例
         producer.start();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             //创建消息, 指定Topic, tags和消息体
             // todo 弄清楚Message各属性的作用
-            Message message = new Message("TopicTestEEEX", "TagA", ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET));
+            Message message = new Message("TopicTest", "TagB", ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET));
+            // 发送消息, SendResult可用来确认消息是否发送成功
+            SendResult send = producer.send(message);
+            System.out.printf("%s%n", send);
+        }
+        for (int i = 0; i < 5; i++) {
+            Message message = new Message("TopicTestA", "TagA", ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET));
             // 发送消息, SendResult可用来确认消息是否发送成功
             SendResult send = producer.send(message);
             System.out.printf("%s%n", send);

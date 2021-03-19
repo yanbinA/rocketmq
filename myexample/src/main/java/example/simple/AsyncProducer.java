@@ -1,5 +1,6 @@
 package example.simple;
 
+import example.LocalProperty;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
@@ -23,19 +24,20 @@ public class AsyncProducer {
         DefaultMQProducer producer = new DefaultMQProducer();
         producer.setProducerGroup("simple_message_group");
         //设置NameServer地址
-        producer.setNamesrvAddr("192.168.227.131:9876");
+        producer.setNamesrvAddr(LocalProperty.SERVER_NAME);
         //启动Producer实例
         producer.start();
         //设置异步发送重试次数
         producer.setRetryTimesWhenSendAsyncFailed(0);
+        producer.setInstanceName("SIMPLE_MESSAGE");
         int count = 10;
-        // todo 这玩意有啥用?
+        // 这玩意有啥用? 线程计数器
         final CountDownLatch2 countDownLatch = new CountDownLatch2(count);
         for (int i = 0; i < count; i++) {
             final int index = i;
             //创建消息, 指定Topic, tags和消息体
             // todo 弄清楚Message各属性的作用
-            Message message = new Message("TopicTest", "TagA", ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET));
+            Message message = new Message("TopicTestA", "TagA", ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET));
             // 发送消息, SendCallback接收异步返回结果的回调
             producer.send(message, new SendCallback() {
                 @Override
@@ -54,7 +56,7 @@ public class AsyncProducer {
         // 等待5s
         countDownLatch.await(5, TimeUnit.SECONDS);
         //关闭实例
-        producer.shutdown();
+        //producer.shutdown();
 
     }
 }
